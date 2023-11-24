@@ -2,3 +2,7 @@ venv/
 __pycache__/
 test.mp3
 test_audio.mp3
+.env
+test2.mp3
+test3.mp3
+test4.mp3

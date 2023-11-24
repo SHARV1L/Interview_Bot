@@ -40,10 +40,13 @@ def get_chat_response(user_message):
         model = "gpt-3.5-turbo",
         messages = messages
         )
-    print(gpt_response)
+    
+    parsed_gpt_response = gpt_response['choices'][0] ['message'] ['content']
+
+    #print(gpt_response)
 
     # Here we will save the messages
-    # save_messages(user_message, gpt_response)
+    save_messages(user_message['text'], parsed_gpt_response)
 
 
 def load_messages():
@@ -69,8 +72,8 @@ def load_messages():
 def save_messages (user_message, gpt_response):
     file = 'database.json'
     messages = load_messages()
-    messages.append(user_message)
-    messages.append(gpt_response)
+    messages.append({"role": "user", "content": user_message})
+    messages.append({"role": "assistant", "content": gpt_response})
     with open(file, 'w') as f:
         json.dump(messages, f)
 
