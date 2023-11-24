@@ -7,8 +7,8 @@ import json
 
 load_dotenv()  # take environment variables from .env
 
-openai.api_key = os.getenv("OPEN_API_KEY")
-openai.organization = os.getenv("OPEN_AI_ORG")
+openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.organization = os.getenv("OPENAI_API_ORG")
 
 app = FastAPI()
 
@@ -24,22 +24,26 @@ async def post_audio(file: UploadFile):
 # Creating functions to make the code modular
 
 def transcribe_audio(file):
-    #audio_file= open(file.filename, "rb")
-    #transcript = openai.Audio.transcribe("whisper-1", audio_file)
-    transcript = {"role": "user", "content": "Who won the world series in 2020?"}
+    audio_file= open(file.filename, "rb")
+    transcript = openai.Audio.transcribe("whisper-1", audio_file)
     print(transcript)
-    #return{"message": "Hey, your audio has been transcribed"}
     return transcript
 
 def get_chat_response(user_message):
     messages = load_messages()
-    messages.append(user_message)
+    messages.append({"role": "user", "content": user_message['text']})
+    #messages.append(user_message)
+    print(messages)
 
-    # Now we can send the request to chat GPT with older messages 
-    gpt_response = {"role": "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020."}
+    # Sending the request to ChatGPT:
+    gpt_response = openai.ChatCompletion.create(
+        model = "gpt-3.5-turbo",
+        messages = messages
+        )
+    print(gpt_response)
 
     # Here we will save the messages
-    save_messages(user_message, gpt_response)
+    # save_messages(user_message, gpt_response)
 
 
 def load_messages():
@@ -58,7 +62,7 @@ def load_messages():
 
     else:
         messages.append(
-            {"role": "system", "content": "You are interviewing the user for the Data Analyst position. Ask them relevent question and provide them with feedback for their response and help them with their preperation. You are Voxel and the user is Sharvil. Provide good and brief response and try be be funny and engaging. "}
+            {"role": "system", "content": "You are helping the user to prepare for the Data Analyst role in a company. Ask them relevent question and provide them with feedback for their response thereby helping them with their preperation. You are Greg and the user is Sharvil. Provide accurate and brief responses and try being be funny and engaging. "}
         )          
     return messages
 
