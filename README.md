@@ -10,5 +10,5 @@ To set up the project, follow the following steps:
 6. Make a ".env" file in root folder that contains all the API keys and initialize them as:OPENAI_API_ORG=<your_org_key>
                                                                                            OPENAI_API_KEY=<your_openai_api_key>
                                                                                            ElEVENLABS_KEY=<elevenlabs_api_key>
-7. To deavtive, type: /deavtivate (in the terminal)
+7. To deavtive, type: deavtivate (in the terminal)
 
